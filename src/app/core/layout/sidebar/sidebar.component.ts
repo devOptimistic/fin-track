@@ -40,7 +40,7 @@ export class SidebarComponent {
     { label: 'تراکنش‌ها', route: '/transactions' },
     { label: 'دسته‌بندی‌ها', route: '/categories' },
     { label: 'بودجه‌بندی', route: '/budgets' },
-    { label: 'اهداف', route: '/' },
+    { label: 'اهداف', route: '/savings-goals' },
     { label: 'تنظیمات', route: '/' },
   ];
 }

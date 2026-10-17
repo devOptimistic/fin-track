@@ -8,6 +8,8 @@ import { CategoryRepository } from './data-access/repositories/category.reposito
 import { MockCategoryRepository } from './data-access/repositories/mock-category.repository';
 import { BudgetRepository } from './data-access/repositories/budget.repository';
 import { MockBudgetRepository } from './data-access/repositories/mock-budget.repository';
+import { SavingsGoalRepository } from './data-access/repositories/savings-goal.repository';
+import { MockSavingsGoalRepository } from './data-access/repositories/mock-savings-goal.repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     { provide: TransactionRepository, useClass: MockTransactionRepository },
     { provide: CategoryRepository, useClass: MockCategoryRepository },
     { provide: BudgetRepository, useClass: MockBudgetRepository },
+    { provide: SavingsGoalRepository, useClass: MockSavingsGoalRepository },
   ],
 };

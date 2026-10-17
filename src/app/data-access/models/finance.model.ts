@@ -24,3 +24,11 @@ export interface Budget {
   month: number;
   year: number;
 }
+
+export interface SavingsGoal {
+  id: string;
+  title: string;
+  targetAmount: number;
+  currentAmount: number;
+  targetDate: string; // ISO string
+}

@@ -39,6 +39,13 @@ export const routes: Routes = [
             (m) => m.BudgetsComponent,
           ),
       },
+      {
+        path: 'savings-goals',
+        loadComponent: () =>
+          import('./features/savings-goals/savings-goals.component').then(
+            (m) => m.SavingsGoalsComponent,
+          ),
+      },
     ],
   },
 ];
