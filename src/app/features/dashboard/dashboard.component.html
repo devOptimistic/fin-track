@@ -1,0 +1,106 @@
+<section class="space-y-6">
+  @if (transactions().length === 0) {
+    <!-- Loading state -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (placeholder of [1, 2, 3]; track placeholder) {
+        <div class="animate-pulse rounded-xl bg-white p-5 shadow-sm">
+          <div class="h-4 w-24 rounded bg-gray-200"></div>
+          <div class="mt-3 h-7 w-40 rounded bg-gray-200"></div>
+        </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      @for (placeholder of [1, 2]; track placeholder) {
+        <div class="rounded-xl bg-white p-6 shadow-sm">
+          <div class="h-5 w-32 animate-pulse rounded bg-gray-200"></div>
+          <div class="mt-4 h-72 w-full animate-pulse rounded-lg bg-gray-100"></div>
+        </div>
+      }
+    </div>
+
+    <div class="flex items-center justify-center gap-3 rounded-xl bg-white p-6 shadow-sm">
+      <span class="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-green-500"></span>
+      <span class="text-sm text-gray-500">در حال بارگذاری تراکنش‌ها…</span>
+    </div>
+  } @else {
+    <!-- Summary cards -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="rounded-xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-medium text-gray-500">کل درآمد</p>
+        <p class="mt-2 text-2xl font-bold text-green-600">
+          {{ totalIncome() | number }}
+          <span class="text-sm font-normal text-gray-400">تومان</span>
+        </p>
+      </article>
+
+      <article class="rounded-xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-medium text-gray-500">کل هزینه</p>
+        <p class="mt-2 text-2xl font-bold text-red-600">
+          {{ totalExpense() | number }}
+          <span class="text-sm font-normal text-gray-400">تومان</span>
+        </p>
+      </article>
+
+      <article class="rounded-xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-medium text-gray-500">مانده حساب</p>
+        <p class="mt-2 text-2xl font-bold text-blue-600">
+          {{ netBalance() | number }}
+          <span class="text-sm font-normal text-gray-400">تومان</span>
+        </p>
+      </article>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <article class="rounded-xl bg-white p-6 shadow-sm">
+        <h2 class="mb-4 text-base font-semibold text-gray-800">روند مالی</h2>
+        <div echarts [options]="trendChartOption()" class="h-72 w-full"></div>
+      </article>
+
+      <article class="rounded-xl bg-white p-6 shadow-sm">
+        <h2 class="mb-4 text-base font-semibold text-gray-800">توزیع هزینه‌ها</h2>
+        <div echarts [options]="categoryChartOption()" class="h-72 w-full"></div>
+      </article>
+    </div>
+
+    <!-- Recent transactions -->
+    <article class="rounded-xl bg-white shadow-sm">
+      <h2 class="border-b border-gray-100 px-6 py-4 text-base font-semibold text-gray-800">
+        آخرین تراکنش‌ها
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-right text-sm">
+          <thead>
+            <tr class="text-gray-500">
+              <th class="px-6 py-3 font-medium">عنوان</th>
+              <th class="px-6 py-3 font-medium">تاریخ</th>
+              <th class="px-6 py-3 font-medium">مبلغ</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (transaction of transactions(); track transaction.id) {
+              <tr class="border-t border-gray-100 transition-colors hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-800">
+                  {{ transaction.description || labelFor(transaction.categoryId) }}
+                </td>
+                <td class="px-6 py-4 text-gray-500">
+                  {{ transaction.date | date: 'yyyy/MM/dd' }}
+                </td>
+                <td
+                  class="px-6 py-4 font-semibold"
+                  [class.text-green-600]="transaction.type === 'income'"
+                  [class.text-red-600]="transaction.type === 'expense'"
+                >
+                  {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | number }}
+                  <span class="text-xs font-normal text-gray-400">تومان</span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+  }
+</section>
