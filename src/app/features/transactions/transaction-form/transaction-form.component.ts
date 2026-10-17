@@ -1,11 +1,8 @@
 import { Component, inject, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Transaction, TransactionType } from '../../../data-access/models/finance.model';
-
-interface CategoryOption {
-  readonly id: string;
-  readonly name: string;
-}
+import { Category, Transaction, TransactionType } from '../../../data-access/models/finance.model';
+import { CategoryRepository } from '../../../data-access/repositories/category.repository';
 
 @Component({
   selector: 'app-transaction-form',
@@ -55,7 +52,7 @@ interface CategoryOption {
             class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
           >
             <option value="" disabled>انتخاب دسته‌بندی</option>
-            @for (category of categories; track category.id) {
+            @for (category of categories(); track category.id) {
               <option [value]="category.id">{{ category.name }}</option>
             }
           </select>
@@ -109,9 +106,14 @@ interface CategoryOption {
 })
 export class TransactionFormComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly categoryRepository = inject(CategoryRepository);
 
   readonly save = output<Partial<Transaction>>();
   readonly cancel = output<void>();
+
+  protected readonly categories = toSignal(this.categoryRepository.getCategories(), {
+    initialValue: [] as Category[],
+  });
 
   protected readonly form = this.fb.nonNullable.group({
     type: this.fb.nonNullable.control<TransactionType>('expense', [Validators.required]),
@@ -120,17 +122,6 @@ export class TransactionFormComponent {
     date: this.fb.nonNullable.control('', [Validators.required]),
     description: this.fb.nonNullable.control(''),
   });
-
-  protected readonly categories: ReadonlyArray<CategoryOption> = [
-    { id: 'cat-food', name: 'خوراک' },
-    { id: 'cat-rent', name: 'اجاره' },
-    { id: 'cat-transport', name: 'حمل و نقل' },
-    { id: 'cat-utilities', name: 'قبوض' },
-    { id: 'cat-entertainment', name: 'تفریح' },
-    { id: 'cat-salary', name: 'حقوق' },
-    { id: 'cat-freelance', name: 'فریلنس' },
-    { id: 'cat-other', name: 'سایر' },
-  ];
 
   protected onSubmit(): void {
     if (this.form.invalid) {

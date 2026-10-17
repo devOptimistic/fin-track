@@ -1,0 +1,60 @@
+<section class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-xl font-semibold text-gray-800">مدیریت دسته‌بندی‌ها</h1>
+    <button
+      type="button"
+      (click)="openForm()"
+      class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
+    >
+      افزودن دسته‌بندی
+    </button>
+  </div>
+
+  @if (isFormOpen()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <app-category-form (save)="onSave($event)" (cancel)="closeForm()"></app-category-form>
+    </div>
+  } @else {
+    @if (categories().length === 0) {
+      <div class="flex items-center justify-center gap-3 rounded-xl bg-white p-10 shadow-sm">
+        <span class="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-green-500"></span>
+        <span class="text-sm text-gray-500">در حال بارگذاری دسته‌بندی‌ها…</span>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        @for (cat of categories(); track cat.id) {
+          <article class="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span
+                class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
+                [style.background-color]="cat.color ?? '#9ca3af'"
+              >
+                {{ cat.name.charAt(0) }}
+              </span>
+              <div>
+                <p class="font-medium text-gray-800">{{ cat.name }}</p>
+                <span
+                  class="mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium"
+                  [class.bg-green-50]="cat.type === 'income'"
+                  [class.text-green-700]="cat.type === 'income'"
+                  [class.bg-red-50]="cat.type === 'expense'"
+                  [class.text-red-700]="cat.type === 'expense'"
+                >
+                  {{ cat.type === 'income' ? 'درآمد' : 'هزینه' }}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              (click)="onDelete(cat.id)"
+              class="text-sm font-medium text-red-500 transition-colors hover:text-red-700"
+            >
+              حذف
+            </button>
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

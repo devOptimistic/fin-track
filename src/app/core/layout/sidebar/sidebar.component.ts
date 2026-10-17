@@ -38,7 +38,7 @@ export class SidebarComponent {
   protected readonly navItems: ReadonlyArray<NavItem> = [
     { label: 'داشبورد', route: '/dashboard' },
     { label: 'تراکنش‌ها', route: '/transactions' },
-    { label: 'دسته‌بندی‌ها', route: '/' },
+    { label: 'دسته‌بندی‌ها', route: '/categories' },
     { label: 'بودجه‌بندی', route: '/' },
     { label: 'اهداف', route: '/' },
     { label: 'تنظیمات', route: '/' },
