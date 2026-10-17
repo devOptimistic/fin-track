@@ -6,6 +6,8 @@ import { TransactionRepository } from './data-access/repositories/transaction.re
 import { MockTransactionRepository } from './data-access/repositories/mock-transaction.repository';
 import { CategoryRepository } from './data-access/repositories/category.repository';
 import { MockCategoryRepository } from './data-access/repositories/mock-category.repository';
+import { BudgetRepository } from './data-access/repositories/budget.repository';
+import { MockBudgetRepository } from './data-access/repositories/mock-budget.repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideEchartsCore({ echarts: () => import('echarts') }),
     { provide: TransactionRepository, useClass: MockTransactionRepository },
     { provide: CategoryRepository, useClass: MockCategoryRepository },
+    { provide: BudgetRepository, useClass: MockBudgetRepository },
   ],
 };

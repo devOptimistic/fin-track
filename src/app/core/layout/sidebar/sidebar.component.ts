@@ -39,7 +39,7 @@ export class SidebarComponent {
     { label: 'داشبورد', route: '/dashboard' },
     { label: 'تراکنش‌ها', route: '/transactions' },
     { label: 'دسته‌بندی‌ها', route: '/categories' },
-    { label: 'بودجه‌بندی', route: '/' },
+    { label: 'بودجه‌بندی', route: '/budgets' },
     { label: 'اهداف', route: '/' },
     { label: 'تنظیمات', route: '/' },
   ];

@@ -16,3 +16,11 @@ export interface Transaction {
   date: string; // ISO 8601 string
   description?: string;
 }
+
+export interface Budget {
+  id: string;
+  categoryId: string;
+  amount: number;
+  month: number;
+  year: number;
+}
