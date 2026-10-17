@@ -1,10 +1,11 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
 import { Transaction, TransactionType } from '../../data-access/models/finance.model';
 import { TransactionRepository } from '../../data-access/repositories/transaction.repository';
+import { TomanPipe } from '../../shared/pipes/toman.pipe';
 
 interface ChartSlice {
   name: string;
@@ -14,7 +15,7 @@ interface ChartSlice {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgxEchartsDirective, CurrencyPipe, DecimalPipe, DatePipe],
+  imports: [NgxEchartsDirective, DatePipe, TomanPipe],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {

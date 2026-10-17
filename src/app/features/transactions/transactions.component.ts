@@ -1,15 +1,16 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { Transaction } from '../../data-access/models/finance.model';
 import { TransactionRepository } from '../../data-access/repositories/transaction.repository';
+import { TomanPipe } from '../../shared/pipes/toman.pipe';
 import { TransactionFormComponent } from './transaction-form/transaction-form.component';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [TransactionFormComponent, CurrencyPipe, DecimalPipe, DatePipe],
+  imports: [TransactionFormComponent, DatePipe, TomanPipe],
   templateUrl: './transactions.component.html',
 })
 export class TransactionsComponent {
@@ -28,10 +29,12 @@ export class TransactionsComponent {
 
   protected readonly refreshTrigger = signal(0);
   protected readonly isFormOpen = signal(false);
+  protected readonly loading = signal(true);
 
   protected readonly transactions = toSignal(
     toObservable(this.refreshTrigger).pipe(
       switchMap(() => this.repository.getTransactions()),
+      tap(() => this.loading.set(false)),
     ),
     { initialValue: [] as Transaction[] },
   );

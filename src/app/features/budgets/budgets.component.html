@@ -15,7 +15,7 @@
       <app-budget-form (save)="onSave($event)" (cancel)="closeForm()"></app-budget-form>
     </div>
   } @else {
-    @if (budgetProgress().length === 0) {
+    @if (loading()) {
       <div class="flex items-center justify-center gap-3 rounded-xl bg-white p-10 shadow-sm">
         <span class="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-green-500"></span>
         <span class="text-sm text-gray-500">در حال بارگذاری بودجه‌ها…</span>
@@ -38,11 +38,11 @@
             <div class="mt-3 flex items-center justify-between text-sm">
               <span class="text-gray-500">
                 هزینه‌شده:
-                <span class="font-medium text-gray-800">{{ item.spent | number }} تومان</span>
+                <span class="font-medium text-gray-800">{{ item.spent | toman }}</span>
               </span>
               <span class="text-gray-500">
                 بودجه:
-                <span class="font-medium text-gray-800">{{ item.amount | number }} تومان</span>
+                <span class="font-medium text-gray-800">{{ item.amount | toman }}</span>
               </span>
             </div>
 
@@ -59,10 +59,16 @@
 
               <div class="mt-2 flex items-center justify-between text-xs text-gray-500">
                 <span>{{ item.percentage }}%</span>
-                <span>باقی‌مانده: {{ item.remaining | number }} تومان</span>
+                <span>باقی‌مانده: {{ item.remaining | toman }}</span>
               </div>
             </div>
           </article>
+        } @empty {
+          <div
+            class="col-span-full rounded-xl border border-dashed border-gray-300 bg-white py-12 text-center text-gray-500"
+          >
+            <p>هیچ رکوردی یافت نشد.</p>
+          </div>
         }
       </div>
     }

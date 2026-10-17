@@ -15,7 +15,7 @@
       <app-transaction-form (save)="onSave($event)" (cancel)="closeForm()"></app-transaction-form>
     </div>
   } @else {
-    @if (transactions().length === 0) {
+    @if (loading()) {
       <div class="flex items-center justify-center gap-3 rounded-xl bg-white p-10 shadow-sm">
         <span class="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-green-500"></span>
         <span class="text-sm text-gray-500">در حال بارگذاری تراکنش‌ها…</span>
@@ -61,8 +61,7 @@
                   [class.text-green-600]="tx.type === 'income'"
                   [class.text-red-600]="tx.type === 'expense'"
                 >
-                  {{ tx.type === 'income' ? '+' : '-' }}{{ tx.amount | number }}
-                  <span class="text-xs font-normal text-gray-400">تومان</span>
+                  {{ tx.type === 'income' ? '+' : '-' }}{{ tx.amount | toman }}
                 </td>
                 <td class="px-6 py-4">
                   <button
@@ -72,6 +71,12 @@
                   >
                     حذف
                   </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                  هیچ رکوردی یافت نشد.
                 </td>
               </tr>
             }

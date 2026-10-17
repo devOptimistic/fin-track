@@ -1,11 +1,11 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { Budget, Category, Transaction } from '../../data-access/models/finance.model';
 import { BudgetRepository } from '../../data-access/repositories/budget.repository';
 import { CategoryRepository } from '../../data-access/repositories/category.repository';
 import { TransactionRepository } from '../../data-access/repositories/transaction.repository';
+import { TomanPipe } from '../../shared/pipes/toman.pipe';
 import { BudgetFormComponent } from './budget-form/budget-form.component';
 
 interface BudgetProgress extends Budget {
@@ -18,7 +18,7 @@ interface BudgetProgress extends Budget {
 @Component({
   selector: 'app-budgets',
   standalone: true,
-  imports: [BudgetFormComponent, DecimalPipe],
+  imports: [BudgetFormComponent, TomanPipe],
   templateUrl: './budgets.component.html',
 })
 export class BudgetsComponent {
@@ -28,10 +28,12 @@ export class BudgetsComponent {
 
   protected readonly refreshTrigger = signal(0);
   protected readonly isFormOpen = signal(false);
+  protected readonly loading = signal(true);
 
   protected readonly budgets = toSignal(
     toObservable(this.refreshTrigger).pipe(
       switchMap(() => this.budgetRepository.getBudgets()),
+      tap(() => this.loading.set(false)),
     ),
     { initialValue: [] as Budget[] },
   );

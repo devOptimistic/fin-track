@@ -1,9 +1,10 @@
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { SavingsGoal } from '../../data-access/models/finance.model';
 import { SavingsGoalRepository } from '../../data-access/repositories/savings-goal.repository';
+import { TomanPipe } from '../../shared/pipes/toman.pipe';
 import { SavingsGoalFormComponent } from './savings-goal-form/savings-goal-form.component';
 
 interface GoalProgress extends SavingsGoal {
@@ -13,7 +14,7 @@ interface GoalProgress extends SavingsGoal {
 @Component({
   selector: 'app-savings-goals',
   standalone: true,
-  imports: [SavingsGoalFormComponent, DatePipe, DecimalPipe],
+  imports: [SavingsGoalFormComponent, DatePipe, TomanPipe],
   templateUrl: './savings-goals.component.html',
 })
 export class SavingsGoalsComponent {
@@ -21,10 +22,12 @@ export class SavingsGoalsComponent {
 
   protected readonly refreshTrigger = signal(0);
   protected readonly isFormOpen = signal(false);
+  protected readonly loading = signal(true);
 
   protected readonly goals = toSignal(
     toObservable(this.refreshTrigger).pipe(
       switchMap(() => this.repository.getGoals()),
+      tap(() => this.loading.set(false)),
     ),
     { initialValue: [] as SavingsGoal[] },
   );

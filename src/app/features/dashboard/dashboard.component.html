@@ -29,24 +29,21 @@
       <article class="rounded-xl bg-white p-5 shadow-sm">
         <p class="text-sm font-medium text-gray-500">کل درآمد</p>
         <p class="mt-2 text-2xl font-bold text-green-600">
-          {{ totalIncome() | number }}
-          <span class="text-sm font-normal text-gray-400">تومان</span>
+          {{ totalIncome() | toman }}
         </p>
       </article>
 
       <article class="rounded-xl bg-white p-5 shadow-sm">
         <p class="text-sm font-medium text-gray-500">کل هزینه</p>
         <p class="mt-2 text-2xl font-bold text-red-600">
-          {{ totalExpense() | number }}
-          <span class="text-sm font-normal text-gray-400">تومان</span>
+          {{ totalExpense() | toman }}
         </p>
       </article>
 
       <article class="rounded-xl bg-white p-5 shadow-sm">
         <p class="text-sm font-medium text-gray-500">مانده حساب</p>
         <p class="mt-2 text-2xl font-bold text-blue-600">
-          {{ netBalance() | number }}
-          <span class="text-sm font-normal text-gray-400">تومان</span>
+          {{ netBalance() | toman }}
         </p>
       </article>
     </div>
@@ -93,8 +90,7 @@
                   [class.text-green-600]="transaction.type === 'income'"
                   [class.text-red-600]="transaction.type === 'expense'"
                 >
-                  {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | number }}
-                  <span class="text-xs font-normal text-gray-400">تومان</span>
+                  {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | toman }}
                 </td>
               </tr>
             }
