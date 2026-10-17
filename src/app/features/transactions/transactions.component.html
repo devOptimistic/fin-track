@@ -1,0 +1,83 @@
+<section class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-xl font-semibold text-gray-800">مدیریت تراکنش‌ها</h1>
+    <button
+      type="button"
+      (click)="openForm()"
+      class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
+    >
+      ثبت تراکنش جدید
+    </button>
+  </div>
+
+  @if (isFormOpen()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <app-transaction-form (save)="onSave($event)" (cancel)="closeForm()"></app-transaction-form>
+    </div>
+  } @else {
+    @if (transactions().length === 0) {
+      <div class="flex items-center justify-center gap-3 rounded-xl bg-white p-10 shadow-sm">
+        <span class="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-green-500"></span>
+        <span class="text-sm text-gray-500">در حال بارگذاری تراکنش‌ها…</span>
+      </div>
+    } @else {
+      <div class="overflow-x-auto rounded-xl bg-white shadow-sm">
+        <table class="w-full text-right text-sm">
+          <thead class="text-gray-500">
+            <tr>
+              <th class="px-6 py-3 font-medium">تاریخ</th>
+              <th class="px-6 py-3 font-medium">توضیحات</th>
+              <th class="px-6 py-3 font-medium">دسته‌بندی</th>
+              <th class="px-6 py-3 font-medium">نوع</th>
+              <th class="px-6 py-3 font-medium">مبلغ</th>
+              <th class="px-6 py-3 font-medium">عملیات</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (tx of transactions(); track tx.id) {
+              <tr class="border-t border-gray-100 transition-colors hover:bg-gray-50">
+                <td class="px-6 py-4 text-gray-500">
+                  {{ tx.date | date: 'yyyy/MM/dd' }}
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-800">
+                  {{ tx.description || '—' }}
+                </td>
+                <td class="px-6 py-4 text-gray-600">
+                  {{ labelFor(tx.categoryId) }}
+                </td>
+                <td class="px-6 py-4">
+                  <span
+                    class="rounded-full px-2.5 py-1 text-xs font-medium"
+                    [class.bg-green-50]="tx.type === 'income'"
+                    [class.text-green-700]="tx.type === 'income'"
+                    [class.bg-red-50]="tx.type === 'expense'"
+                    [class.text-red-700]="tx.type === 'expense'"
+                  >
+                    {{ tx.type === 'income' ? 'درآمد' : 'هزینه' }}
+                  </span>
+                </td>
+                <td
+                  class="px-6 py-4 font-semibold"
+                  [class.text-green-600]="tx.type === 'income'"
+                  [class.text-red-600]="tx.type === 'expense'"
+                >
+                  {{ tx.type === 'income' ? '+' : '-' }}{{ tx.amount | number }}
+                  <span class="text-xs font-normal text-gray-400">تومان</span>
+                </td>
+                <td class="px-6 py-4">
+                  <button
+                    type="button"
+                    (click)="onDelete(tx.id)"
+                    class="text-sm font-medium text-red-500 transition-colors hover:text-red-700"
+                  >
+                    حذف
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</section>
