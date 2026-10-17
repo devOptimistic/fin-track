@@ -1,3 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+@config "../tailwind.config.js";
+
+/* IRANSans web font (files live in public/fonts) */
+@font-face {
+  font-family: 'IRANSans';
+  src: url('../public/fonts/IRANSansWeb_Regular.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@layer base {
+  html,
+  body {
+    direction: rtl;
+    font-family: 'IRANSans', sans-serif;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+}

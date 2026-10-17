@@ -8,7 +8,7 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, HeaderComponent],
   template: `
-    <div class="flex h-screen w-full overflow-hidden bg-gray-50">
+    <div class="flex h-screen w-full overflow-hidden bg-gray-50 font-sans">
       @if (isSidebarOpen()) {
         <div
           class="fixed inset-0 z-40 bg-black/50 md:hidden"
