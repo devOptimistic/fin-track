@@ -1,4 +1,5 @@
-import { Component, output } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -34,20 +35,31 @@ import { Component, output } from '@angular/core';
         <h1 class="text-lg font-semibold text-gray-800">داشبورد</h1>
       </div>
 
-      <button
-        type="button"
-        class="flex items-center gap-3 rounded-full outline-none focus:ring-2 focus:ring-green-500"
-        aria-label="حساب کاربری"
-      >
-        <span
-          class="flex h-9 w-9 items-center justify-center rounded-full bg-green-500 text-sm font-semibold text-white"
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
+          <span class="hidden text-sm font-medium text-gray-700 sm:block">
+            {{ authService.currentUser()?.fullName }}
+          </span>
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-full bg-green-500 text-sm font-semibold text-white"
+          >
+            {{ authService.currentUser()?.fullName?.charAt(0) || 'م' }}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          (click)="authService.logout()"
+          class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-red-600"
         >
-          م
-        </span>
-      </button>
+          خروج
+        </button>
+      </div>
     </header>
   `,
 })
 export class HeaderComponent {
+  protected readonly authService = inject(AuthService);
+
   readonly toggleSidebar = output<void>();
 }
